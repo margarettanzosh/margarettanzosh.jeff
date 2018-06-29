@@ -343,6 +343,10 @@ header.masthead p {
   margin-bottom: 2rem;
 }
 
+.space-above {
+  padding-top: 6rem;
+}
+
 /* .form-group {
   margin-bottom: 25px;
   input, */
