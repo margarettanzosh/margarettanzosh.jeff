@@ -39,6 +39,16 @@
   // Collapse the navbar when page is scrolled
   $(window).scroll(navbarCollapse);
 
+  // added to hide dropdown when clicked
+  $('.dropdown-item').click(function(){
+    $('.dropdown-menu').toggle(false);
+  });
+
+  $('#navbarDropdown').click(function() {
+    $('.dropdown-menu').toggle(true);
+  })
+
+
   // Scroll reveal calls
   window.sr = ScrollReveal();
   sr.reveal('.sr-icons', {
