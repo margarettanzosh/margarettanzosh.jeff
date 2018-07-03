@@ -60,7 +60,6 @@
             <div class="form-group">
               <label for="headline">Headline</label>
               <input type="text" class="form-control" id="headline" placeholder="Enter headiline">
-              <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
             </div>
             <div class="form-group">
               <label for="date">Date</label>
@@ -71,12 +70,10 @@
               <label for="blog-post">Write your post here</label>
               <textarea id="blog-post" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
-            <!-- <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-              <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
 
             <button id="savePost" type="submit" class="btn btn-primary">Save</button>
-            <button id="nextPost" class="btn btn-success" type="button">Next Blog Post</button>
+            <button id="prevPost" class="btn btn-secondary" type="button">Previous Post</button>
+            <button id="nextPost" class="btn btn-success" type="button">Next Post</button>
             <button id="deletePost" class="btn btn-danger" type="button">Delete</button>
 
           </form>
@@ -100,88 +97,90 @@
     <script>
 
       let posts = [];
+      let i;
 
       postRef.on("value", function(snapshot){
+        posts = [];
         let data = snapshot.val();
         console.log(data);
 
         for (let key in data) {
-          posts.push(data[key])
+          posts.push({
+            key: key,
+            headline: data[key].headline,
+            date: data[key].date,
+            post: data[key].post
+          })
         }
-
+        
         console.log(posts);
 
-        let i = posts.length - 1;
-
+        i = posts.length - 1;
         fillForm(i);
+      })
 
-        function fillForm(i) {
+      function fillForm(i) {
           // fill in form
           $('#headline').val(posts[i].headline);
           $('#date').val(posts[i].date);
           $('#blog-post').val(posts[i].post);
+      }
+      
+      $('#changePost').submit(function(event) {
+        let blogHeadline = $('#headline').val();
+        let blogDate = $('#date').val();
+        let blogEntry = $('#blog-post').val();
 
+        if (!blogHeadline || !blogDate || !blogEntry) {
+          alert("Please complete all fields!");
 
-          $('#changePost').submit(function(event) {
-            let blogHeadline = $('#headline').val();
-            let blogDate = $('#date').val();
-            let blogEntry = $('#blog-post').val();
-
-            if (!blogHeadline || !blogDate || !blogEntry) {
-              alert("Please complete all fields!");
-              event.preventDefault();
-              return;
-            }
+        }
+        else {
+          postRef.child(posts[i].key).update({
+            headline: blogHeadline,
+            date: blogDate,
+            post: blogEntry
           })
         }
-
-        $('#nextPost').click(function() {
-          if (i > 0) {
-            i--;
-            fillForm(i);
-          }
-          else {
-            alert("End of posts!");
-          }
-        })
+        alert("Updated!");
+        event.preventDefault();
       })
 
-
-
-        // let i = posts.length - 1;
-        //
-        // // fill in form
-        // $('#headline').val(posts[i].headline);
-        // $('#date').val(posts[i].date);
-        // $('#blog-post').val(posts[i].post);
-        //
-        //
-        // $('#changePost').submit(function(event) {
-        //   let blogHeadline = $('#headline').val();
-        //   let blogDate = $('#date').val();
-        //   let blogEntry = $('#blog-post').val();
-        //
-        //   if (!blogHeadline || !blogDate || !blogEntry) {
-        //     alert("Please complete all fields!");
-        //     event.preventDefault();
-        //     return;
-        //   }
-        //
-        //   console.log(blogDate);
-
-          // postRef.push({
-          //   headline: blogHeadline,
-          //   date: blogDate,
-          //   post: blogEntry
-          // })
-
-        //   $('#newPost').reset();
-        //   event.preventDefault();
-        // })
-
+      $('#nextPost').click(function() {
+        if (i > 0) {
+          i--;
+          fillForm(i);
+        }
+        else {
+          alert("End of posts!");
+        }
+      })
+      
+      $('#prevPost').click(function() {
+        if (i < posts.length - 1) {
+          i++;
+          fillForm(i);
+        }
+        else {
+          alert("No previous posts!");
+        }
+      })
+      
+      $('#deletePost').click(function() {
+        postRef.child(posts[i].key).remove();
+        
+        if (posts.length > 1) {
+          i = posts.length - 1;
+          fillForm(i);
+        }
+        else {
+          $('#headline').val('');
+          $('#date').val('');
+          $('#blog-post').val('');
+        }
+      })
+      
 
     </script>
-
   </body>
-
 </html>

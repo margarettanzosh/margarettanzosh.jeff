@@ -116,7 +116,11 @@
             post: blogEntry
           })
 
-          $('#newPost').reset();
+          // $('#newPost')[0].reset();
+          
+          $('#headline').val('');
+          $('#date').val('');
+          $('#blog-post').val('');
           event.preventDefault();
         })
 
