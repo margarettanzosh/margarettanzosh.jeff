@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>JW Blog Entries</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <style>
+      body {
+        padding-top: 54px;
+      }
+      @media (min-width: 992px) {
+        body {
+          padding-top: 56px;
+        }
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">JW Blog</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item">
+              <a class="nav-link" href="#">New</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="edit.html">Edit/Delete</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-left">
+          <h1 class="mt-5">Enter New Blog Entry</h1>
+          <form id="newPost">
+            <div class="form-group">
+              <label for="headline">Headline</label>
+              <input type="text" class="form-control" id="headline" placeholder="Enter headiline">
+              <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+            </div>
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="date" class="form-control" id="date" placeholder="Date">
+            </div>
+
+            <div class="form-group">
+              <label for="blog-post">Write your post here</label>
+              <textarea id="blog-post" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <!-- <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
+
+            <button id="savePost" type="submit" class="btn btn-primary">Save</button>
+
+          </form>
+          <br/>
+          <p>To add mutliple paragraphs, put each paragraph inside of &ltp&gt and &lt/p&gt tags </p>
+          </p>
+          <p>To add an image, use the following: &ltimg src="filename.jpg"&gt. No close tag is needed.
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Firebase JavaScript -->
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
+    <script src="blogDB.js"></script>
+
+    <script>
+
+        $('#newPost').submit(function(event) {
+          let blogHeadline = $('#headline').val();
+          let blogDate = $('#date').val();
+          let blogEntry = $('#blog-post').val();
+
+          if (!blogHeadline || !blogDate || !blogEntry) {
+            alert("Please complete all fields!");
+            event.preventDefault();
+            return;
+          }
+
+          console.log(blogDate);
+
+          postRef.push({
+            headline: blogHeadline,
+            date: blogDate,
+            post: blogEntry
+          })
+
+          $('#newPost').reset();
+          event.preventDefault();
+        })
+
+
+    </script>
+
+  </body>
+
+</html>
