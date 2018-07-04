@@ -168,6 +168,8 @@
       
       $('#deletePost').click(function() {
         postRef.child(posts[i].key).remove();
+        posts.splice(i, 1);
+        alert("Post deleted!");
         
         if (posts.length > 1) {
           i = posts.length - 1;
